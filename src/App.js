@@ -25,30 +25,52 @@ export default function App() {
 }
 
 function Accordion() {
+  const [curOpen, setIsOpen] = useState(null);
+
   return (
     <div className="accordion">
       {faqs.map((faq, i) => (
-        <AccordionItem i={i} title={faq.title} text={faq.text} />
+        <AccordionItem
+          i={i}
+          title={faq.title}
+          key={faq.title}
+          curOpen={curOpen}
+          onOpen={setIsOpen}
+        >
+          {faq.text}
+        </AccordionItem>
       ))}
+      <AccordionItem
+        i={22}
+        title="Thinking in React"
+        key="Test"
+        curOpen={curOpen}
+        onOpen={setIsOpen}
+      >
+        <p>Allows React developers to:</p>
+        <ul>
+          <li>Break up UI into components</li>
+          <li>Make components reusable</li>
+          <li>Place state efficiently</li>
+        </ul>
+      </AccordionItem>
     </div>
   );
 }
 
-function AccordionItem({ i, title, text }) {
-  const [isOpen, setIsOpen] = useState(false);
+function AccordionItem({ i, title, curOpen, onOpen, children }) {
+  const isOpen = i === curOpen;
   function handleToggle() {
-    setIsOpen(!isOpen);
+    // onOpen(isOpen ? null : i);
+    onOpen(i !== curOpen ? i : null);
   }
 
   return (
-    <div
-      className={`item ${isOpen ? "open" : ""}`}
-      onClick={() => handleToggle()}
-    >
+    <div className={`item ${isOpen ? "open" : ""}`} onClick={handleToggle}>
       <p className="number">{(i + 1).toString().padStart(2, "0")}</p>
       <span className="title"> {title} </span>
       <span className="icon">{isOpen ? "-" : "+"}</span>
-      {isOpen && <div className="content-box"> {text}</div>}
+      {isOpen && <div className="content-box"> {children}</div>}
     </div>
   );
 }
