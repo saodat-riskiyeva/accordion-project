@@ -36,22 +36,18 @@ function Accordion() {
 
 function AccordionItem({ i, title, text }) {
   const [isOpen, setIsOpen] = useState(false);
-  function handleIsOpen() {
+  function handleToggle() {
     setIsOpen(!isOpen);
   }
+
   return (
-    <div className="item">
-      <p className="number" onClick={() => handleIsOpen()}>
-        {" "}
-        {(i + 1).toString().padStart(2, "0")}
-      </p>
-      <span className="title" onClick={() => handleIsOpen()}>
-        {" "}
-        {title}{" "}
-      </span>
-      <span className="icon" onClick={() => handleIsOpen()}>
-        {isOpen ? "-" : "+"}
-      </span>
+    <div
+      className={`item ${isOpen ? "open" : ""}`}
+      onClick={() => handleToggle()}
+    >
+      <p className="number">{(i + 1).toString().padStart(2, "0")}</p>
+      <span className="title"> {title} </span>
+      <span className="icon">{isOpen ? "-" : "+"}</span>
       {isOpen && <div className="content-box"> {text}</div>}
     </div>
   );
